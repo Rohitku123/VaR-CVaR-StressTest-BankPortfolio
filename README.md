@@ -3,123 +3,128 @@ Value at Risk (VaR), Conditional Value at Risk (CVaR), and Stress Testing using 
 This project evaluates the risk of a portfolio comprising four major global banks—Bank of America (BAC), Citigroup (C), UBS Group (UBS), and Deutsche Bank (DB)—using statistical risk measures like Value at Risk (VaR), Conditional Value at Risk (CVaR), and Stress Testing.
 
 
- Objective
-To assess the downside risk and stress performance of a multi-asset bank portfolio using:
+#  Portfolio Risk Analysis: VaR, CVaR & Stress Testing on Global Banks
 
-Historical price data from Yahoo Finance
+This project performs a comprehensive **risk analysis** of a portfolio of four major global banks—**Bank of America (BAC), Citigroup (C), UBS Group (UBS), and Deutsche Bank (DB)**. Using **Parametric VaR**, **CVaR**, and **Stress Testing**, it assesses potential losses under normal and adverse market conditions.
 
-Parametric approach for VaR and CVaR
+---
 
-10-day forward risk estimation
+##  Objective
 
-Scenario-based Stress Testing
+- Calculate 1-day and 10-day **Value at Risk (VaR)** using the parametric method.
+- Compute **Conditional VaR (CVaR)** (Expected Shortfall).
+- Perform **stress testing** under hypothetical adverse scenarios.
+- Understand tail risks in a global bank portfolio.
 
-🛠 Tools & Libraries
-Python
+---
 
-Pandas, NumPy
+##  Assumptions
 
-yFinance
+| Parameter              | Value                     |
+|------------------------|---------------------------|
+| Initial Portfolio Value| $1,000,000                |
+| Portfolio Weights      | BAC: 30%, C: 30%, UBS: 20%, DB: 20% |
+| Confidence Levels      | 90%, 95%, 99%             |
+| Historical Data Range  | July 2020 to July 2025    |
+| Data Source            | Yahoo Finance (`yfinance`) |
+| Distribution Assumption| Normal (for parametric method) |
 
-Matplotlib, Seaborn
+---
 
-Scipy Stats
+##  Technologies Used
 
- Assumptions
-Portfolio value: $1,000,000
+- Python
+- NumPy, Pandas
+- yFinance
+- Matplotlib, Seaborn
+- SciPy Stats
 
-Weights assigned:
+---
 
-BAC: 30%
+##  Methodology
 
-C: 30%
+### 1. Data Collection & Cleaning
+- Downloaded historical **closing prices** of 4 bank stocks.
+- Calculated **daily returns** using percentage change.
+- Dropped missing values and aligned the data.
 
-UBS: 20%
+### 2. Portfolio Return & Volatility
+- Calculated **mean returns** and **covariance matrix**.
+- Used **dot product** for portfolio mean return.
+- Computed **portfolio standard deviation** using matrix algebra.
 
-DB: 20%
+### 3. Value at Risk (VaR)
+Used the **parametric (Gaussian)** method:
 
-Confidence levels: 90%, 95%, 99%
+\[
+\text{VaR}_{\alpha} = z_{\alpha} \cdot \sigma_p \cdot \sqrt{t} \cdot V
+\]
 
-Parametric approach assumes returns are normally distributed
+Where:
+- \( z_{\alpha} \) is the z-score at confidence level α
+- \( \sigma_p \) is portfolio standard deviation
+- \( t \) is time horizon (1-day or 10-day)
+- \( V \) is portfolio value
 
-Historical data from July 2020 to July 2025
+### 4. Conditional VaR (CVaR)
+Computed as:
 
- Methodology
-Download and Clean Price Data
+\[
+\text{CVaR}_{\alpha} = \frac{\phi(z_\alpha)}{1 - \alpha} \cdot \sigma_p \cdot \sqrt{t} \cdot V
+\]
 
-Extracted close prices of 4 banks
+Where \( \phi(z_\alpha) \) is the standard normal PDF.
 
-Computed daily returns and handled NaNs
+### 5. Stress Testing (Scenario Analysis)
+- Applied **Monte Carlo simulations** and **shock-based stress** scenarios.
+- Simulated adverse returns and their impact on portfolio value.
 
-Portfolio Return & Volatility Calculation
+---
 
-Weighted mean of returns
+##  Key Results
 
-Portfolio standard deviation using covariance matrix
+###  Value at Risk (VaR)
 
-Value at Risk (VaR)
+| Confidence Level | 1-Day VaR ($) | 10-Day VaR ($) |
+|------------------|---------------|----------------|
+| **90%**          | 52,485        | 165,931        |
+| **95%**          | 61,875        | 195,625        |
+| **99%**          | 84,656        | 267,675        |
 
-Parametric approach using z-scores at 90%, 95%, 99% confidence
+###  Conditional VaR (CVaR)
 
-Also extended to a 10-day horizon
+| Confidence Level | 1-Day CVaR ($) | 10-Day CVaR ($) |
+|------------------|----------------|-----------------|
+| **90%**          | 63,754         | 201,393         |
+| **95%**          | 77,931         | 246,334         |
+| **99%**          | 108,174        | 341,948         |
 
-Conditional VaR (CVaR)
+###  Stress Test Loss (Worst Simulated Outcomes)
+- **Simulated max loss** in extreme scenarios: **~$140,000 to $150,000**
 
-Expected shortfall beyond the VaR threshold
+---
 
-Calculated using the formula:
+##  Interpretation
 
-CVaR
-𝛼
-=
-𝜙
-(
-𝑧
-𝛼
-)
-1
-−
-𝛼
-⋅
-𝜎
-⋅
-𝑉
-CVaR 
-α
-​
- = 
-1−α
-ϕ(z 
-α
-​
- )
-​
- ⋅σ⋅V
-Stress Testing / Scenario Analysis
+- The **1-day 95% VaR** of ~$61,875 means there's a 5% chance of losing **more than $61,875** in one day.
+- **CVaR** quantifies average loss **beyond** the VaR threshold and is always **greater than VaR**.
+- Extending to a **10-day horizon** significantly **amplifies potential losses** due to volatility scaling.
+- **Stress testing** shows that **real-world risks** (especially in crises) can **exceed VaR/CVaR estimates**, justifying robust capital buffers.
 
-Simulated extreme losses using Monte Carlo with shocks
+---
 
-Analyzed performance under adverse return conditions
+##  Conclusion
 
- Results Summary
-Metric	1-Day VaR	10-Day VaR	1-Day CVaR	10-Day CVaR
-99%	$84,656	$267,675	$108,174	$341,948
-95%	$61,875	$195,625	$77,931	$246,334
-90%	$52,485	$165,931	$63,754	$201,393
+This notebook demonstrates practical implementation of:
 
-Risk increases non-linearly with time due to volatility scaling.
+- Parametric **VaR and CVaR**
+- Multi-asset portfolio risk evaluation
+- Scenario-based **stress testing**
 
-CVaR > VaR always, indicating the average loss in worst-case scenarios is much worse than the threshold cut-off.
+These methods are **aligned with financial risk regulations** like **CCAR**, **Basel II/III**, and are widely used in **investment banks, hedge funds**, and **risk management teams**.
 
-Stress testing showed potential extreme losses as high as ~$140,000–$150,000, emphasizing need for capital buffers.
+---
 
- Interpretation
-The portfolio shows moderate risk at the 95% confidence level with daily VaR of ~$61k.
+##  Project Structure
 
-A 10-day holding period significantly increases risk, almost tripling losses.
-
-Stress testing reveals that under extreme market conditions, losses may exceed VaR estimates, justifying the use of CVaR for better risk insight.
-
- Conclusion
-This project demonstrates a full-stack risk analysis pipeline with VaR, CVaR, and stress testing applied on a realistic financial portfolio. The techniques used are aligned with practices in quantitative finance, risk management, and regulatory stress testing frameworks such as CCAR.
 
