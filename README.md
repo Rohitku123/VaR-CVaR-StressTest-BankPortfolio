@@ -1,3 +1,9 @@
+
+
+ <img width="480" height="360" alt="image" src="https://github.com/user-attachments/assets/f4430f89-f995-4cf0-b43f-a5d1d57c7839" />   
+
+
+ 
 # VaR-CVaR-StressTest-BankPortfolio
 Value at Risk (VaR), Conditional Value at Risk (CVaR), and Stress Testing using monte Carlo and parametric methods on a portfolio of four international banks:
 This project evaluates the risk of a portfolio comprising four major global banks—Bank of America (BAC), Citigroup (C), UBS Group (UBS), and Deutsche Bank (DB)—using statistical risk measures like Value at Risk (VaR), Conditional Value at Risk (CVaR), and Stress Testing.
